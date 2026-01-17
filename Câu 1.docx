@@ -17,9 +17,11 @@ public:
 
 2. Đa hình (Polymorphism)
   Khái niệm: Là khả năng các đối tượng thuộc các lớp khác nhau (trong cùng cây kế thừa) phản ứng theo những cách khác nhau đối với cùng một thông điệp (lời gọi hàm).
+
   Các thể hiện (Manifestations):
     Đa hình động (Runtime Polymorphism): Sử dụng virtual function và con trỏ/tham chiếu lớp cha (Base*). Quyết định gọi hàm nào xảy ra lúc chạy chương trình.
     Đa hình tĩnh (Compile-time Polymorphism): Function Overloading (Nạp chồng hàm) và Template.
+
     Điều kiện Đa hình động:
       1. Có kế thừa.
       2. Hàm ở lớp cha là virtual.
@@ -69,6 +71,7 @@ void processCheckout(PaymentMethod* method, double money) {
     Tham số: BẮT BUỘC KHÁC NHAU (số lượng/kiểu). / BẮT BUỘC GIỐNG NHAU hoàn toàn.
     Từ khóa: Không cần virtual. / Cần virtual ở lớp cha (nên có override ở lớp con).
     Cơ chế: Compile-time (Tĩnh). / Runtime (Động).
+
   Ví dụ minh họa:
 class Base {
 public:
@@ -143,6 +146,7 @@ public:
 7. Static Binding vs Dynamic Binding
   Static Binding (Liên kết tĩnh): Hàm được quyết định gọi ngay lúc biên dịch (Compile-time). Xảy ra khi dùng hàm thường hoặc Overloading. (Nhanh nhưng cứng nhắc).
   Dynamic Binding (Liên kết động): Hàm được quyết định gọi lúc chạy (Runtime) dựa vào đối tượng thực tế. Xảy ra khi dùng virtual + Con trỏ/Tham chiếu. (Linh hoạt).
+
 8. Quan hệ HAS-A (Thành phần/Composition)
   Khái niệm: Đối tượng này chứa đối tượng kia như một phần của nó.
   Phân biệt:
@@ -155,6 +159,7 @@ public:
   static member:
     Là tài sản chung của cả lớp, không thuộc về riêng một đối tượng nào.
     Dùng để đếm số lượng đối tượng (count), hoặc hằng số chung.
+
   friend function:
     Hàm bạn không phải là thành viên của lớp nhưng được phép truy cập vào private của lớp đó.
     Thường dùng để nạp chồng toán tử nhập xuất (>>, <<).
