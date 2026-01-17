@@ -84,3 +84,53 @@ public:
         return *this;
     }
 };
+
+6. Lớp Trừu tượng (Abstract Class)
+  Khái niệm: Là lớp chứa ít nhất một hàm thuần ảo (pure virtual function).
+  Đặc điểm:
+    Không thể khởi tạo đối tượng (Instance) từ lớp này. (VD: Không thể new Shape(), chỉ có thể new Circle()).
+    Dùng làm khung mẫu (Interface) để các lớp con bắt buộc phải định nghĩa lại các hàm đó.
+  Cú pháp hàm thuần ảo: virtual void func() = 0;
+
+7. Static Binding vs Dynamic Binding
+  Static Binding (Liên kết tĩnh): Hàm được quyết định gọi ngay lúc biên dịch (Compile-time). Xảy ra khi dùng hàm thường hoặc Overloading. (Nhanh nhưng cứng nhắc).
+  Dynamic Binding (Liên kết động): Hàm được quyết định gọi lúc chạy (Runtime) dựa vào đối tượng thực tế. Xảy ra khi dùng virtual + Con trỏ/Tham chiếu. (Linh hoạt).
+8. Quan hệ HAS-A (Thành phần/Composition)
+  Khái niệm: Đối tượng này chứa đối tượng kia như một phần của nó.
+  Phân biệt:
+    IS-A (Kế thừa): Student là một Person.
+    HAS-A (Thành phần): Car có một Engine. (Xe hơi không là động cơ).
+  Tại sao quan trọng? Đề thi hay hỏi: "Khi nào nên dùng Kế thừa, khi nào nên dùng Thành phần?".
+    Trả lời: Dùng Kế thừa khi muốn tái sử dụng hành vi (behavior) và quan hệ là "Là một". Dùng Thành phần khi muốn kết hợp các bộ phận lại.
+
+9. Từ khóa static & friend
+  static member:
+    Là tài sản chung của cả lớp, không thuộc về riêng một đối tượng nào.
+    Dùng để đếm số lượng đối tượng (count), hoặc hằng số chung.
+  friend function:
+    Hàm bạn không phải là thành viên của lớp nhưng được phép truy cập vào private của lớp đó.
+    Thường dùng để nạp chồng toán tử nhập xuất (>>, <<).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
