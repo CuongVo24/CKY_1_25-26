@@ -24,7 +24,44 @@ public:
       1. Có kế thừa.
       2. Hàm ở lớp cha là virtual.
       3. Gọi qua con trỏ/tham chiếu lớp cha.
-        
+Ví dụ:
+  // 1. Lớp cha (Abstract Class) - Định nghĩa giao diện chung
+class PaymentMethod {
+public:
+    // virtual là chìa khóa của Đa hình
+    virtual void pay(double amount) = 0; // Pure virtual function
+    virtual ~PaymentMethod() {} // Luôn nhớ virtual destructor!
+};
+
+  // 2. Các lớp con (Concrete Classes) - Thực hiện hành vi cụ thể
+class Cash : public PaymentMethod {
+public:
+    void pay(double amount) override {
+        cout << "-> Tra " << amount << "k bang TIEN MAT.\n";
+    }
+};
+
+class CreditCard : public PaymentMethod {
+public:
+    void pay(double amount) override {
+        cout << "-> Quet the VISA so tien: " << amount << "k (Phi 2%).\n";
+    }
+};
+
+class Momo : public PaymentMethod {
+public:
+    void pay(double amount) override {
+        cout << "-> Tru vi MOMO: " << amount << "k (Hoan tien 5%).\n";
+    }
+};
+
+  // 3. Hàm xử lý chung (Không quan tâm loại thanh toán là gì)
+void processCheckout(PaymentMethod* method, double money) {
+    cout << "Dang xu ly giao dich...\n";
+    method->pay(money); // ĐA HÌNH XẢY RA Ở ĐÂY
+    // Dù code giống hệt nhau, nhưng chạy khác nhau tùy đối tượng truyền vào
+}
+
 3. Phân biệt Override và Overloading
   Overloading (Nạp chồng) / Overriding (Ghi đè/Phủ quyết)
     Phạm vi: Trong cùng một class (hoặc global). / Giữa lớp Cha và lớp Con (Kế thừa).
@@ -47,15 +84,26 @@ public:
     // Overriding: Viết lại hàm show y chang của Base
     void show() override { cout << "Derived show"; } 
 };
+Tại sao cái này hay? Giả sử sếp bảo: "Thêm tính năng thanh toán bằng Bitcoin".
+  Nếu không có đa hình: Em phải vào hàm processCheckout, viết thêm if (type == BITCOIN) {...}. Sửa code cũ -> Rủi ro bug.
+  Có đa hình: Em chỉ cần tạo class Bitcoin kế thừa PaymentMethod. Hàm processCheckout giữ nguyên 100%. Đây là nguyên lý Open/Closed (Mở để mở rộng, Đóng để sửa đổi).
 
 4. Tính đóng gói (Encapsulation) & Blackbox Rule
   Tính đóng gói: Là kỹ thuật gom dữ liệu (Data) và các thao tác trên dữ liệu (Methods) vào một đơn vị duy nhất (Class), đồng thời che giấu chi tiết cài đặt bên trong.
     Sử dụng private để giấu dữ liệu.
     Sử dụng public (Getter/Setter) để cung cấp cổng giao tiếp.
+
   Blackbox Rule (Quy tắc hộp đen): * Người sử dụng đối tượng (Client) không cần biết bên trong đối tượng hoạt động thế nào (Logic phức tạp bị ẩn đi).
     Họ chỉ cần biết đầu vào (Input) đưa vào cổng public và nhận lại kết quả (Output).
     Lợi ích: Giúp thay đổi code bên trong mà không ảnh hưởng đến người dùng bên ngoài.
-  
+
+  Chúng ta phải để private và chỉ cho phép truy cập qua Getter/Setter (public) vì 3 lý do sống còn sau:
+    Lý do 1: Bảo vệ toàn vẹn dữ liệu (Data Integrity). Thực tế: Ngăn chặn data rác (tuổi âm, ngày tháng thứ 32, lương < 0) làm sập hệ thống tính toán phía sau.
+    Lý do 2: Ẩn giấu chi tiết xử lý (Abstraction). Người dùng class không cần biết dữ liệu được lưu thế nào, họ chỉ cần kết quả.
+    Lý do 3: Kiểm soát quyền truy cập (Read-only / Write-only)
+      Nếu để public, người ta vừa đọc vừa sửa được.
+      Nếu để private, em có thể chỉ viết hàm getSalary() (xem lương) mà không viết hàm setSalary() (sửa lương). -> Thực tế: Nhân viên chỉ được xem lương mình, không được tự sửa lương mình lên 1 tỷ.
+
 5. Quy tắc "The Big Three" (3 Big Rule)
     Nội dung: Nếu một class cần phải viết thủ công Hàm hủy (Destructor) (thường do có cấp phát động), thì class đó cũng cần phải viết thủ công Copy Constructor và Assignment Operator (operator=).
     Tại sao (Why): * Trình biên dịch mặc định chỉ thực hiện Shallow Copy (Sao chép nông - chỉ copy địa chỉ con trỏ).
