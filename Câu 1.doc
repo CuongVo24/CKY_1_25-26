@@ -1,0 +1,97 @@
+1. Kế thừa (Inheritance)
+  Khái niệm: Là cơ chế cho phép xây dựng một lớp mới (Lớp con - Derived Class) dựa trên các thuộc tính và phương thức của một lớp đã có (Lớp cha - Base Class).
+  Mục đích: Tái sử dụng mã nguồn (Reusability) và tạo nên cấu trúc phân cấp (Hierarchy).
+  Quan hệ: Thể hiện mối quan hệ IS-A (Là một).
+    Ví dụ minh họa:
+    // Lớp cha
+class Animal {
+public:
+    void eat() { cout << "Eating..."; }
+};
+
+// Lớp con kế thừa lớp cha
+class Cat : public Animal { // Cat IS-A Animal
+public:
+    void meow() { cout << "Meow..."; }
+};
+
+2. Đa hình (Polymorphism)
+  Khái niệm: Là khả năng các đối tượng thuộc các lớp khác nhau (trong cùng cây kế thừa) phản ứng theo những cách khác nhau đối với cùng một thông điệp (lời gọi hàm).
+  Các thể hiện (Manifestations):
+    Đa hình động (Runtime Polymorphism): Sử dụng virtual function và con trỏ/tham chiếu lớp cha (Base*). Quyết định gọi hàm nào xảy ra lúc chạy chương trình.
+    Đa hình tĩnh (Compile-time Polymorphism): Function Overloading (Nạp chồng hàm) và Template.
+    Điều kiện Đa hình động:
+      1. Có kế thừa.
+      2. Hàm ở lớp cha là virtual.
+      3. Gọi qua con trỏ/tham chiếu lớp cha.
+        
+3. Phân biệt Override và Overloading
+  Overloading (Nạp chồng) / Overriding (Ghi đè/Phủ quyết)
+    Phạm vi: Trong cùng một class (hoặc global). / Giữa lớp Cha và lớp Con (Kế thừa).
+    Tên hàm: Giống nhau. / Giống nhau.
+    Tham số: BẮT BUỘC KHÁC NHAU (số lượng/kiểu). / BẮT BUỘC GIỐNG NHAU hoàn toàn.
+    Từ khóa: Không cần virtual. / Cần virtual ở lớp cha (nên có override ở lớp con).
+    Cơ chế: Compile-time (Tĩnh). / Runtime (Động).
+  Ví dụ minh họa:
+class Base {
+public:
+    // Overloading: Cùng tên func, khác tham số
+    void func(int x) { cout << "Int"; }
+    void func(double y) { cout << "Double"; } 
+
+    virtual void show() { cout << "Base show"; }
+};
+
+class Derived : public Base {
+public:
+    // Overriding: Viết lại hàm show y chang của Base
+    void show() override { cout << "Derived show"; } 
+};
+
+4. Tính đóng gói (Encapsulation) & Blackbox Rule
+  Tính đóng gói: Là kỹ thuật gom dữ liệu (Data) và các thao tác trên dữ liệu (Methods) vào một đơn vị duy nhất (Class), đồng thời che giấu chi tiết cài đặt bên trong.
+    Sử dụng private để giấu dữ liệu.
+    Sử dụng public (Getter/Setter) để cung cấp cổng giao tiếp.
+  Blackbox Rule (Quy tắc hộp đen): * Người sử dụng đối tượng (Client) không cần biết bên trong đối tượng hoạt động thế nào (Logic phức tạp bị ẩn đi).
+    Họ chỉ cần biết đầu vào (Input) đưa vào cổng public và nhận lại kết quả (Output).
+    Lợi ích: Giúp thay đổi code bên trong mà không ảnh hưởng đến người dùng bên ngoài.
+  
+5. Quy tắc "The Big Three" (3 Big Rule)
+    Nội dung: Nếu một class cần phải viết thủ công Hàm hủy (Destructor) (thường do có cấp phát động), thì class đó cũng cần phải viết thủ công Copy Constructor và Assignment Operator (operator=).
+    Tại sao (Why): * Trình biên dịch mặc định chỉ thực hiện Shallow Copy (Sao chép nông - chỉ copy địa chỉ con trỏ).
+      Khi 2 đối tượng cùng trỏ vào 1 vùng nhớ, nếu 1 đối tượng bị hủy (delete), vùng nhớ đó mất đi. Đối tượng kia truy cập vào sẽ lỗi hoặc khi hủy sẽ bị Double Free (Giải phóng 2 lần).
+      -> Cần cài đặt "The Big Three" để thực hiện Deep Copy (Sao chép sâu - tạo vùng nhớ mới riêng biệt).
+Ví dụ Code:
+class MyString {
+    char* str;
+public:
+    // 1. Destructor
+    ~MyString() { delete[] str; }
+
+    // 2. Copy Constructor
+    MyString(const MyString& other) {
+        str = new char[strlen(other.str) + 1];
+        strcpy(str, other.str);
+    }
+
+    // 3. Assignment Operator
+    MyString& operator=(const MyString& other) {
+        if (this != &other) { // Chống tự gán
+            delete[] str;     // Xóa cũ
+            str = new char[strlen(other.str) + 1]; // Cấp mới
+            strcpy(str, other.str); // Copy dữ liệu
+        }
+        return *this;
+    }
+};
+
+
+
+
+        
+
+
+
+    
+
+        
